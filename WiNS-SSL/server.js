@@ -18,21 +18,23 @@ var options = {
 };
 
 var server = tls.createServer(options, function(c) {
-	console.log('server connected', c.authorized ? 'authorized' : 'unauthorized');
-	//c.write("welcome!\n");
+	var currentTime = new Date();
+	console.log('client connected, ' + currentTime.toString());
+	console.log('connection is ', c.authorized ? 'authorized' : 'unauthorized');
+	
 	c.setEncoding('utf8');
-	
-	//c.pipe(c);
-	
+		
 	c.on('end', function() {
-		console.log('client disconnected');
+		var currentTime = new Date();
+		console.log('client disconnected, ' + currentTime.toString());
 	});
 	
 	c.on('data', function(data) {
+		var currentTime = new Date();
 		var request_string = data.toString().trim();
 		var new_response = '';
 		
-		console.log('new request: ' + request_string);
+		console.log(currentTime.toString() + ' new request: ' + request_string);
 		var found_record = false;
 		for (var i = 0; i < wins_addresses.length; i++) {
 			if (wins_addresses[i].h == request_string) {
@@ -51,5 +53,6 @@ var server = tls.createServer(options, function(c) {
 });
 
 server.listen(wins_server_port, function() {
-	console.log('WiNS-SSL server bound and ready');
+	var currentTime = new Date();
+	console.log('WiNS-SSL server bound and ready, ' + currentTime.toString());
 });

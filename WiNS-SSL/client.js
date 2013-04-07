@@ -19,7 +19,8 @@ var options = {
 };
 
 var cleartextStream = tls.connect(wins_server_port, options, function() {
-	console.log('client connected', cleartextStream.authorized ? 'authorized' : 'unauthorized');
+	console.log('client connected');
+	console.log('connection is', cleartextStream.authorized ? 'authorized' : 'unauthorized');
 	console.log('request: '+ask_for);
 	cleartextStream.write(ask_for+'\n');
 });
