@@ -39,8 +39,8 @@ Now that you have a cert, here's what you do with the project to test this out:
 That final step does the following...
 
 1. uses my WiNS-SSL module to translate the desired server hostname "cyle.lol" to the IP "127.0.0.1"
-1. sends the request "GET /" to the CTP server at that IP
-1. renders out the response! which should be a simple text file, in Markdown format
+1. sends the request "GET /" to the CTP server at that IP.
+1. renders out the response, which should be a simple text file, in Markdown format, from the "ctproot" folder.
 
 ## Technical crap
 
@@ -49,6 +49,7 @@ That final step does the following...
 - all of this is still TCP-based, which is inadequate for my hopes with WiNS
 - the SSL certificate crap still relies on DNS, which I don't want
 - WiNS and CTP are "standards" much like DNS and HTTP, I just need to write the standards specs. Most of it involves a simple request which expects a response that contains a status code and a result.
+- "ctproot" is the folder the CTP server uses as a base for requests.
 
 ## Ideas
 
