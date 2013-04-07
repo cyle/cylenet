@@ -5,8 +5,14 @@ if (!String.prototype.trim) {
 	String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
 }
 
+if (process.argv[2] == undefined) {
+	console.log('no request given');
+	process.exit(1);
+} else {
+	var ask_for = process.argv[2];
+}
+
 var wins_server_port = 21335;
-var ask_for = 'cyle.lol';
 
 var options = {
 	rejectUnauthorized: false	
@@ -22,6 +28,7 @@ cleartextStream.setEncoding('utf8');
 
 cleartextStream.on('data', function(data) {
 	console.log('got back: '+data.toString().trim());
+	process.exit(0);
 });
 
 cleartextStream.on('end', function() {
