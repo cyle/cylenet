@@ -1,1 +1,3 @@
 *.pem
+browser/node-webkit.app
+browser/node_modules

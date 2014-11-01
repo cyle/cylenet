@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello World!</title>
+</head>
+<body>
+<h1>Hello World!</h1>
+<div id="wat"></div>
+<div>We are using node.js <script>document.write(process.version)</script>.</div>
+<script>
+var markdown = require('markdown').markdown;
+document.write(markdown.toHTML("Hello **World**!"));
+</script>
+<script src="cylenet.js"></script>
+</body>
+</html>
