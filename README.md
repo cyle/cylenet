@@ -34,12 +34,12 @@ Now that you have a cert, here's what you do with the project to test this out:
 
 1. in one Terminal window, go to the "WiNS-SSL" folder, and run `node server.js`
 1. in another Terminal window, go to the "CTP-SSL" folder, and run `node server.js`
-1. in the final Terminal window, go to the "CTP-SSL" folder, and run `node client.js "cyle.lol" "GET /"`
+1. in the final Terminal window, go to the "CTP-SSL" folder, and run `node client.js "cyle.lol"`
 
 That final step does the following...
 
 1. uses my WiNS-SSL module to translate the desired server hostname "cyle.lol" to the IP "127.0.0.1"
-1. sends the request "GET /" to the CTP server at that IP.
+1. sends the request "REQ cyle.lol/" to the CTP server at that IP.
 1. renders out the response, which should be a simple text file, in Markdown format, from the "ctproot" folder.
 
 ## Technical crap
@@ -48,12 +48,12 @@ That final step does the following...
 - CTP-SSL runs on port 21337
 - all of this is still TCP-based, which is inadequate for my hopes with WiNS
 - the SSL certificate crap still relies on DNS, which I don't want
-- WiNS and CTP are "standards" much like DNS and HTTP, I just need to write the standards specs. Most of it involves a simple request which expects a response that contains a status code and a result.
-- "ctproot" is the folder the CTP server uses as a base for requests.
+- WiNS and CTP are "standards" much like DNS and HTTP, and I've started documenting them in the `docs` folder.
+- "ctproot" is the folder the CTP server uses as a base for requests. A "lol" file is the default "index" file equivalent.
 
 ## Ideas
 
-- I'd like WiNS to be much louder, broadcasting requests instead of relying on specific IPs to act as WiNS servers. I'd like to find a way to decentralize WiNS lookups.
-- I'm not sure how I want to make a "browser" for CyleNet. I like the idea of having only text-based files served, and have them in Markdown format, which can be parsed and then presented in a standardized fashion. When I first thought of CyleNet, I thought of a network protocol that was *only* for text. But good-looking text.
+- Not sure whether I'd like to somehow decentralize WiNS or make it a web-of-trust type deal.
+- Work on a CyleNet browser using node-webkit. I like the idea of having only text-based files served, and have them in Markdown format, which can be parsed and then presented in a standardized fashion. When I first thought of CyleNet, I thought of a network protocol that was *only* for text. But good-looking text.
 - WiNS entries are currently stored in an array in the javascript file, but this should be abstracted further with a key-value database like Redis or something. The "top-level" domains I'd like to use are .lol, .wut, and .dicks. Basically, this is what I'd like the domain name standard to look like, in RegEx format: `/^[-a-z0-9]{3,100}\.[a-z]{2,5}$/i`
 - Need to compress CTP traffic with GZIP or something.
