@@ -16,18 +16,17 @@ if (process.argv[2] == undefined) {
 }
 
 if (process.argv[3] == undefined) {
-	request_string = '/';
+	request_string = 'ctp/1.0 req '+request_host+'/';
 } else {
 	request_string = process.argv[3];
 }
 
 var ctp_server_port = 21337;
 
-
 // get IP of server from given hostname
 var wins = require('../WiNS-SSL');
 
-wins.getIP(request_host, function(wins_response) { 
+wins.getIP(request_host, function(wins_response) {
 	// parse first 3 characters
 	var wins_status = wins_response.substring(0, 3);
 	
@@ -38,7 +37,7 @@ wins.getIP(request_host, function(wins_response) {
 		console.log('IP for hostname ' + request_host + ' is ' + wins_ip);
 		
 		var options = {
-			rejectUnauthorized: false	
+			rejectUnauthorized: false
 		};
 		
 		var cleartextStream = tls.connect(ctp_server_port, wins_ip, options, function() {
