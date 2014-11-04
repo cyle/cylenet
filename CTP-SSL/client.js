@@ -28,11 +28,12 @@ var wins = require('../WiNS-SSL');
 
 wins.getIP(request_host, function(wins_response) {
 	// parse first 3 characters
-	var wins_status = wins_response.substring(0, 3);
+	wins_response = wins_response.replace(/ {2,}/g, ' ');
+	var wins_parts = wins_response.split(' ');
 	
-	if (wins_status * 1 == 100) {
+	if (wins_parts[0] == 'here') {
 		
-		var wins_ip = wins_response.substring(4);
+		var wins_ip = wins_parts[1];
 		
 		console.log('IP for hostname ' + request_host + ' is ' + wins_ip);
 		
@@ -58,7 +59,7 @@ wins.getIP(request_host, function(wins_response) {
 			console.log('client disconnected');
 		});
 		
-	} else if (wins_status * 1 == 404) {
+	} else if (wins_parts[0] == 'nope') {
 		console.log('hostname not found');
 	} else {
 		console.log('cannot look up hostname');

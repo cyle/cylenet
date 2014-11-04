@@ -39,11 +39,11 @@ var server = tls.createServer(options, function(c) {
 		for (var i = 0; i < wins_addresses.length; i++) {
 			if (wins_addresses[i].h == request_string) {
 				found_record = true;
-				new_response = '100 ' + wins_addresses[i].ip;
+				new_response = 'here ' + wins_addresses[i].ip;
 			}
 		}
 		if (found_record == false) {
-			new_response = '404';
+			new_response = 'nope';
 		}
 		
 		console.log('new response: ' + new_response);
