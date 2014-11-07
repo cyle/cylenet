@@ -2,15 +2,37 @@
 <html>
 <head>
 <title>Hello World!</title>
+<style type="text/css">
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+body, input {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 16px;
+}
+div#address-bar-box {
+	width: 100%;
+}
+#address-bar-box input {
+	padding: 0.25em;
+	margin: 0.25em;
+	border-radius: 4px;
+	background-color: white;
+}
+input#address-bar {
+	width: 300px;
+}
+</style>
 </head>
 <body>
-<h1>Hello World!</h1>
-<div id="wat"></div>
-<div>We are using node.js <script>document.write(process.version)</script>.</div>
-<script>
-var markdown = require('markdown').markdown;
-document.write(markdown.toHTML("Hello **World**!"));
-</script>
+<div id="toolbar">
+<div id="address-bar-box"><input placeholder="address here~~" type="text" id="address-bar" /><input type="button" value="&raquo;" id="go-btn" /></div>
+</div>
+<div id="content">
+Oh hai.
+</div>
 <script src="cylenet.js"></script>
 </body>
 </html>
