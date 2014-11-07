@@ -1,5 +1,4 @@
 var tls = require('tls');
-var fs = require('fs');
 
 if (!String.prototype.trim) {
 	String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
@@ -27,7 +26,7 @@ var ctp_server_port = 21337;
 var wins = require('../WiNS-SSL');
 
 wins.getIP(request_host, function(wins_response) {
-	// parse first 3 characters
+	// parse first word of WiNS response
 	wins_response = wins_response.replace(/ {2,}/g, ' ');
 	var wins_parts = wins_response.split(' ');
 	

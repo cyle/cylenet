@@ -6,7 +6,7 @@
     "keywords": [ "cylenet", "awesome", "deepest web", "interweb" ],
     "window": {
         "title": "CyleNet Browser",
-        "toolbar": false,
+        "toolbar": true,
         "frame": true,
         "width": 800,
         "height": 500,

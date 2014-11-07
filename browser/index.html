@@ -14,6 +14,7 @@ body, input {
 }
 div#address-bar-box {
 	width: 100%;
+	border-bottom: 2px solid #aaa;
 }
 #address-bar-box input {
 	padding: 0.25em;
@@ -24,14 +25,17 @@ div#address-bar-box {
 input#address-bar {
 	width: 300px;
 }
+div#content {
+	padding: 1em;
+}
 </style>
 </head>
 <body>
 <div id="toolbar">
-<div id="address-bar-box"><input placeholder="address here~~" type="text" id="address-bar" /><input type="button" value="&raquo;" id="go-btn" /></div>
+<div id="address-bar-box"><input placeholder="address here~~" type="text" id="address-bar" /><input type="button" value="&raquo;" id="go-btn" /> <input id="md-as-html" type="checkbox" title="Render Markdown as HTML?" /></div>
 </div>
 <div id="content">
-Oh hai.
+<iframe id="lol" frameborder="0" seamless></iframe>
 </div>
 <script src="cylenet.js"></script>
 </body>
