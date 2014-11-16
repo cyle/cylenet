@@ -53,7 +53,7 @@ That final step does the following...
 
 ## Ideas
 
-- Not sure whether I'd like to somehow decentralize WiNS or make it a web-of-trust type deal.
-- Work on a CyleNet browser using node-webkit. I like the idea of having only text-based files served, and have them in Markdown format, which can be parsed and then presented in a standardized fashion. When I first thought of CyleNet, I thought of a network protocol that was *only* for text. But good-looking text.
+- Not sure whether I'd like to somehow decentralize WiNS or make it a web-of-trust type deal. leaning towards web-of-trust.
+- CyleNet Browser using node-webkit. I like the idea of having only text-based files served, and have them in Markdown format, which can be parsed and then presented in a standardized fashion. When I first thought of CyleNet, I thought of a network protocol that was *only* for text. But good-looking text. "basic"/default view is just markdown documents in plain text, i.e. iA writer, where as "rendered" view actually renders the markdown into HTML with a user-chosen stylesheet? browser first must attach to a "web of trust" network which provides WiNS server addresses, maybe?
 - WiNS entries are currently stored in an array in the javascript file, but this should be abstracted further with a key-value database like Redis or something. The "top-level" domains I'd like to use are .lol, .wut, and .dicks. Basically, this is what I'd like the domain name standard to look like, in RegEx format: `/^[-a-z0-9]{3,100}\.[a-z]{2,5}$/i`
 - Need to compress CTP traffic with GZIP or something.
