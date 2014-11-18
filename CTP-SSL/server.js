@@ -38,13 +38,22 @@ var server = tls.createServer(options, function(c) {
 		
 		console.log(currentTime.toString() + ' new request: ' + request_string);
 		
-		// clear out excess white space
-		request_string = request_string.replace(/ {2,}/g, ' ');
+		// separate request line from headers
+		var request_headers = request_string.split("\n");
 		
-		console.log(currentTime.toString() + ' cleaned request: ' + request_string);
+		var ctp_request = request_headers[0];
+		request_headers.splice(0, 1);
+		
+		console.log('CTP headers: ');
+		console.log(request_headers);
+		
+		// clear out excess white space
+		ctp_request = ctp_request.replace(/ {2,}/g, ' ');
+		
+		console.log(currentTime.toString() + ' cleaned CTP request: ' + ctp_request);
 		
 		// break down request string
-		var request_parts = request_string.split(' ');
+		var request_parts = ctp_request.split(' ');
 		console.log("request pieces: ");
 		console.log(request_parts);
 		
@@ -122,7 +131,7 @@ var server = tls.createServer(options, function(c) {
 		
 		// send back the response
 		console.log('new response: ' + new_response_status);
-		c.write(new_response_status + '\n\n' + new_response_body + '\n');
+		c.write(new_response_status + "\n" + 'Server-type: CyleNet Basic Server' + '\n\n' + new_response_body + '\n');
 	});
 	
 });
