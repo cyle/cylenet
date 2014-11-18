@@ -4,6 +4,8 @@ var wins = require('../WiNS-SSL');
 
 var ctp_default_server_port = 21337;
 
+var render_md_as_html = false;
+
 function id(wat) {
 	return document.getElementById(wat);
 }
@@ -14,12 +16,36 @@ if (!String.prototype.trim) {
 
 function init() {
 	console.log('init running');
-	id('go-btn').addEventListener('click', go, false);
+	id('md-as-html').addEventListener('click', render_toggle, false);
+	id('address-bar').addEventListener('keyup', address_typing, false);
 	console.log('init\'d');
+}
+
+function render_toggle() {
+	if (render_md_as_html) {
+		render_md_as_html = false;
+		id('md-as-html').className = "off";
+	} else {
+		render_md_as_html = true;
+		id('md-as-html').className = "on";
+	}
+}
+
+function address_typing(e) {
+	if (e.keyCode == 13) { // ENTER key
+		go();
+	}
 }
 
 function go() {
 	var crl = id('address-bar').value;
+	crl = crl.trim();
+	
+	if (crl == '') {
+		//alert('Please enter a location in the address bar.');
+		return;
+	}
+	
 	//alert(crl);
 	console.log('traveling to: ' + crl);
 	
@@ -28,7 +54,7 @@ function go() {
 	console.log(crl_matches);
 	
 	if (crl_matches[2] == undefined) {
-		alert('No valid host name provided, please try again.');
+		id('content').innerHTML = '<pre>No valid host name provided, please try again.</pre>';
 		return;
 	}
 	var request_host = crl_matches[2];
@@ -44,6 +70,7 @@ function go() {
 	id('address-bar').value = 'ctp://' + request_host + request_path;
 	
 	var request_string = 'ctp/1.0 req '+request_host + request_path;
+	request_string += "\n" + 'Client-type: CyleNet Browser 1.0';
 	
 	wins.getIP(request_host, function(wins_response) {
 		// parse first word of WiNS response
@@ -71,14 +98,22 @@ function go() {
 			
 			cleartextStream.on('data', function(data) {
 				data = data.toString();
-				console.log('got back: ' + data);
+				console.log('got back raw: ' + data);
+				var ctp_response = data.substring(0, data.indexOf("\n\n"));
+				console.log('CTP response: ' + ctp_response);
+				var ctp_headers = ctp_response.split("\n");
+				var ctp_response_line = ctp_headers[0];
+				ctp_headers.splice(0, 1);
+				console.log(ctp_headers);
+				var ctp_response_body = data.substring(data.indexOf("\n\n") + 2);
 				var html = '';
-				if (id('md-as-html').checked) {
-					html = markdown.toHTML(data);
+				if (render_md_as_html) {
+					html = markdown.toHTML(ctp_response_body);
 				} else {
-					html = '<pre>'+data+'</pre>';
+					html = '<pre>'+ctp_response_body+'</pre>';
 				}
-				id('lol').src = 'data:text/html;charset=utf-8,' + html;
+				console.log('the html to display: ' + html);
+				id('content').innerHTML = html;
 			});
 			
 			cleartextStream.on('end', function() {
@@ -87,8 +122,10 @@ function go() {
 			
 		} else if (wins_parts[0] == 'nope') {
 			console.log('hostname not found');
+			id('content').innerHTML = '<pre>Hostname not found.</pre>';
 		} else {
 			console.log('cannot look up hostname');
+			id('content').innerHTML = '<pre>Unknown error: cannot look up hostname.</pre>';
 		}
 		
 	});
