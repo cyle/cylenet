@@ -46,14 +46,23 @@ That final step does the following...
 
 - WiNS-SSL runs on port 21335
 - CTP-SSL runs on port 21337
-- all of this is still TCP-based, which is inadequate for my hopes with WiNS
-- the SSL certificate crap still relies on DNS, which I don't want
-- WiNS and CTP are "standards" much like DNS and HTTP, and I've started documenting them in the `docs` folder.
+- all of this is still TCP-based
+- the SSL certificate crap still relies on DNS, kind of, which I don't want, so i may accept the reality of self-signed certs
+- WiNS and CTP are standard specifications much like DNS and HTTP, and I've started documenting them in the `docs` folder.
 - "ctproot" is the folder the CTP server uses as a base for requests. A "lol" file is the default "index" file equivalent.
 
 ## Ideas
 
 - Not sure whether I'd like to somehow decentralize WiNS or make it a web-of-trust type deal. leaning towards web-of-trust.
 - CyleNet Browser using node-webkit. I like the idea of having only text-based files served, and have them in Markdown format, which can be parsed and then presented in a standardized fashion. When I first thought of CyleNet, I thought of a network protocol that was *only* for text. But good-looking text. "basic"/default view is just markdown documents in plain text, i.e. iA writer, where as "rendered" view actually renders the markdown into HTML with a user-chosen stylesheet? browser first must attach to a "web of trust" network which provides WiNS server addresses, maybe?
-- WiNS entries are currently stored in an array in the javascript file, but this should be abstracted further with a key-value database like Redis or something. The "top-level" domains I'd like to use are .lol, .wut, and .dicks. Basically, this is what I'd like the domain name standard to look like, in RegEx format: `/^[-a-z0-9]{3,100}\.[a-z]{2,5}$/i`
 - Need to compress CTP traffic with GZIP or something.
+
+## To-do list
+
+- [ ] Update WiNS-SSL to use the text file format described in the spec
+- [ ] Update WiNS-SSL to send back `try` responses
+- [ ] Add in some kind of memcache-based rate limiting to CTP and WiNS ?
+- [ ] Update the GUI browser, add some kind of way to manage what WiNS servers you trust
+- [ ] Make the GUI browser run a WiNS server ?
+- [ ] Add some kind of wildcard functionality to WiNS records? as in `* try 192.168.1.1` as a fallback at the end of a file?
+- [ ] Add some kind of client-side caching of WiNS records? if so, add a TTL to the server and client...?

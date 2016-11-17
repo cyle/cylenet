@@ -1,6 +1,8 @@
 # CTP Specification
 
-This is the baseline specification for CTP (Cyle Transfer Protocol) requests and responses. CTP is based heavily on HTTP, but made specifically incompatible.
+This is the baseline specification for CTP (Cyle Transfer Protocol) requests and responses.
+
+CTP is based heavily on HTTP, but made _specifically incompatible_.
 
 ## Requests
 
@@ -12,33 +14,41 @@ That translates to a CTP version 1.0 request to `domain.lol` for the resource at
 
     ctp/1.0 req domain.lol/something
 
-Where `/something` is a resource being served by `domain.lol`.
+Where `/something` is a resource being served by the CTP server at `domain.lol`.
 
 More advanced requests contain more than one line in the request. For example, you can include request headers directly underneath the request string:
 
     ctp/1.0 req domain.lol/what
-	header-name: Value
+    header-name value
 
-You can also include data when using certain request methods:
+You can also include data, separated from the headers by an empty newline, when using certain request methods:
 
     ctp/1.0 takethis domain.lol/handler
-	data-type: json
-	
-	{"wut":"huh?"}
+    data-type json
+
+    {"wut":"huh?"}
 
 In that example, the client is sending a JSON object to `domain.lol/handler` via a `takethis` request.
 
-### Request Method Strings
+### Request Method/Verb Strings
 
-Here are the possible standard request method strings, following the regex `/^[a-z]{2,32}$/i`:
+Here are the possible standard methods/verbs that can be used in a request, following the regex `/^[a-z]{2,32}$/i`:
 
-- `req` is asking the server for the content at the specified path.
-- `hey` is asking whether the specified resource exists, but not for the content itself.
-- `takethis` is for sending data to a resource on the server; the request line is then followed by the content to be received by the server.
+- `req` is asking the server for the content at the specified resource path.
+- `hey` is asking whether the specified resource path exists, but not for the content itself.
+- `takethis` is for sending data from the cleitn to a resource on the server; the request line is then followed by the content to be received by the server.
 
 ### Request Header Format
 
-All header keys are case insensitive and will probably be interpreted in lowercase, following this regex: `/^[-_0-9a-z]$/i`. Header values are case sensitive and can be between 1 and 256 characters long. The only illegal character for a header value is a newline. Headers should be separated by a unix newline character (\n).
+Request headers follow these rules:
+
+- All header keys are case insensitive, following this regex: `/^[-_0-9a-z]{2,255}$/i` (note the lack of spaces).
+- There must be one space between the header key and the header value.
+- Header values are _case sensitive_ and can be between 1 and 256 characters long.
+- The only illegal character for a header value is a newline.
+- Headers must be no longer than 512 characters (255 for header name, space, then 256 for header value).
+- Headers should be separated by a unix newline character (\n).
+- There can be as many headers as you wish, but only the first instance of a header key will be used.
 
 ### Common Request Headers
 
@@ -49,18 +59,18 @@ Some common request headers include:
 
 ## Responses
 
-A client should expect a response in the following format:
+When performing a `req` request for a resource that exists, a CTP client should expect a response from the CTP server in the following format:
 
     ctp/1.0 okay
-	header-name: Value
-	
-	Actual Response Content Area Here
+    header-name Value
 
-All responses will begin with the supported version of CTP, followed by a space, and then a status code string. After a unix newline character (\n), any headers will be on their own lines (separated by unix newline characters), then a blank line, and then the actual content of the site. By standard, content is expected to be in Markdown format.
+    Actual Response Content Area Here
+
+All responses will begin with the version of CTP used, followed by a space, and then a status code string. After a unix newline character (\n), any headers will be on their own lines (separated by unix newline characters), then a blank newline, and then the actual content of the resource. By standard, content is expected to be in Markdown format.
 
 ### Response Header Format
 
-All header keys are case insensitive and will probably be returned in lowercase, following this regex: `/^[-_0-9a-z]$/i`. Header values are case sensitive and can be between 1 and 256 characters long. The only illegal character for a header value is a newline. Headers should be separated by a unix newline character (\n).
+Response header formatting follows the same rules as [request headers](#request-header-format).
 
 ### Common Response Headers
 
@@ -75,6 +85,6 @@ Some common response headers include:
 Here are the possible standard response status code strings, following the regex `/^[a-z]{2,32}$/i`:
 
 - `okay` means the resource was found and is contained within the response content area.
-- `sure` means the resource does exist, but does not contain any of the content.
+- `sure` means the resource does exist, but does not contain any of the content. Useful in response to a `hey` request.
 - `nope` means the resource was not returned for some reason; the reason may be contained in the response content area.
-- `moved` means the resource was moved somewhere else; the new resource location path will be contained in the response content area.
+- `moved` means the resource was moved somewhere else; the new resource path will be contained in the response content area.
