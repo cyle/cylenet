@@ -14,7 +14,7 @@ const default_wins_server_port = 21335;
  * @param {String} wins_server The WiNS server address to look up on, defaults to localhost
  * @param {Number} wins_server_port The WiNS port to use, defaults to the default 21335
  */
-exports.getRecord = function(hostname, callback, wins_server, wins_server_port) {
+module.exports.getRecord = function(hostname, callback, wins_server, wins_server_port) {
     // make sure there's a server provided
     if (wins_server === undefined) {
         wins_server = '127.0.0.1'; // default to localhost
