@@ -1,38 +1,45 @@
-// WiNS client module
+/**
+ * WiNS client module, for use in other node.js projects.
+ */
 
-var tls = require('tls');
-var fs = require('fs');
+const tls = require('tls');
+const fs = require('fs');
+const default_wins_server_port = 21335;
 
-if (!String.prototype.trim) {
-	String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
-}
+/**
+ * A simple helper function that gets a record back for the given hostname from a WiNS server.
+ *
+ * @param {String} hostname The domain name to look up.
+ * @param {Function} callback The callback to perform when this gets the record, should expect a string as input.
+ * @param {String} wins_server The WiNS server address to look up on, defaults to localhost
+ * @param {Number} wins_server_port The WiNS port to use, defaults to the default 21335
+ */
+exports.getRecord = function(hostname, callback, wins_server, wins_server_port) {
+    // make sure there's a server provided
+    if (wins_server === undefined) {
+        wins_server = '127.0.0.1'; // default to localhost
+    }
 
-var wins_server_port = 21335;
+    // make sure there's a port defined
+    if (wins_server_port === undefined) {
+        wins_server_port = default_wins_server_port; // default to the default, lol
+    }
 
-exports.getIP = function(hostname, callback) {
-		
-	var options = {
-		rejectUnauthorized: false	
-	};
-	
-	var cleartextStream = tls.connect(wins_server_port, options, function() {
-		//console.log('client connected');
-		//console.log('connection is', cleartextStream.authorized ? 'authorized' : 'unauthorized');
-		//console.log('request: '+hostname);
-		cleartextStream.write(hostname+'\n');
-	});
-	
-	cleartextStream.setEncoding('utf8');
-	
-	cleartextStream.on('data', function(data) {
-		//console.log('got back: '+data.toString().trim());
-		//process.exit(0);
-		callback(data.toString().trim());
-	});
-	
-	cleartextStream.on('end', function() {
-		//console.log('client disconnected');
-	});
-	
+    // TLS client options
+    let client_options = {
+        rejectUnauthorized: false
+    };
+
+    // create our TLS stream and send along the given hostname
+    let tls_stream = tls.connect(wins_server_port, wins_server, client_options, function() {
+        tls_stream.write(hostname.trim() + '\n');
+    });
+
+    // set expected encoding back
+    tls_stream.setEncoding('utf8');
+
+    // on data back from the server, call the client's callback
+    tls_stream.on('data', function(data) {
+        callback(data.toString().trim());
+    });
 };
-

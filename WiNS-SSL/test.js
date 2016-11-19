@@ -1,6 +1,8 @@
+// load the wins module
+const wins = require('./module.js');
 
-var wins = require('./module.js');
-
-wins.getIP('cyle.lol', function(theIP) { 
-	console.log(theIP); 
+// use it to fetch a record
+wins.getRecord('cyle.lol', function(record) {
+    // spit out the record info
+    console.log(record);
 });
