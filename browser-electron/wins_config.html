@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WiNS Servers</title>
+<link rel="stylesheet" href="browser.css" />
+</head>
+<body id="wins-config-window">
+<p>Define which WiNS servers you'd like to use, one per line:</p>
+<textarea id="wins-server-list">127.0.0.1</textarea>
+<p>They'll be used in order to look up IP addresses for domain names.</p>
+<script>
+require('./wins_config.js');
+</script>
+</body>
+</html>
