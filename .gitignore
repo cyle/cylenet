@@ -1,3 +1,3 @@
 *.pem
-browser/node-webkit.app
+node-webkit.app
 node_modules
