@@ -137,7 +137,7 @@ var server = tls.createServer(server_options, function(c) {
         // send back the response
         currentTime = new Date();
         console.log(currentTime.toString() + ' new response: ' + new_response_status);
-        c.write(new_response_status + '\n' + 'server-type: ' + ctp_server_type + '\n\n' + new_response_body + '\n');
+        c.write(new_response_status + '\n' + 'server-type ' + ctp_server_type + '\n\n' + new_response_body + '\n');
         c.end();
     });
 
@@ -145,5 +145,5 @@ var server = tls.createServer(server_options, function(c) {
 
 server.listen(ctp_server_port, function() {
     let currentTime = new Date();
-    console.log(currentTime.toString() + ' CTP-SSL server bound and ready');
+    console.log(currentTime.toString() + ' CTP-SSL server bound and ready on port ' + ctp_server_port);
 });
